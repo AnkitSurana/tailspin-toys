@@ -10,6 +10,10 @@ Tailspin Toys is a crowdfunding platform for games with a developer theme. The p
 - **Vitest** — unit tests for the data layer and pure transforms.
 - **Playwright** — end-to-end tests run against the built static site.
 
+The home-page catalog includes client-side category and publisher filters over the
+prerendered game cards. Categories use OR matching, while a publisher selection
+combines with categories using AND matching; selections are not persisted in the URL.
+
 ## Coding standards
 
 Repository coding standards are maintained in [`.github/instructions/`](.github/instructions/). They cover:

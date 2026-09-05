@@ -24,4 +24,48 @@ test.describe('Home Page', () => {
     // Check that the welcome message is present using more specific locator
     await expect(page.getByText('Find your next game! And maybe even back one! Explore our collection!')).toBeVisible();
   });
+
+  test('filters games by category and clears the selection', async ({ page }) => {
+    const cards = page.locator('[data-testid="game-card"]:not([hidden])');
+    const strategy = page.getByLabel('Strategy', { exact: true });
+    const initialCount = await cards.count();
+
+    await expect(cards).toHaveCount(initialCount);
+    await strategy.check();
+    await expect(cards).toHaveCount(4);
+    await expect(page.getByTestId('filter-results')).toHaveText('Showing 4 games');
+
+    await page.getByTestId('filter-reset').click();
+    await expect(cards).toHaveCount(initialCount);
+    await expect(strategy).not.toBeChecked();
+  });
+
+  test('filters games by publisher and combines publisher with category', async ({ page }) => {
+    const cards = page.locator('[data-testid="game-card"]:not([hidden])');
+    const publisher = page.getByTestId('filter-publisher');
+
+    await publisher.selectOption({ label: 'CodeForge Studios' });
+    await expect(cards).toHaveCount(6);
+
+    await page.getByLabel('Strategy', { exact: true }).check();
+    await expect(cards).toHaveCount(1);
+    await expect(page.getByTestId('filter-results')).toHaveText('Showing 1 game');
+  });
+
+  test('supports multiple categories with keyboard controls', async ({ page }) => {
+    const cards = page.locator('[data-testid="game-card"]:not([hidden])');
+    const strategy = page.getByLabel('Strategy', { exact: true });
+    const puzzle = page.getByLabel('Puzzle', { exact: true });
+
+    await strategy.focus();
+    await expect(strategy).toBeFocused();
+    await page.keyboard.press('Space');
+    await puzzle.focus();
+    await page.keyboard.press('Space');
+
+    await expect(strategy).toBeChecked();
+    await expect(puzzle).toBeChecked();
+    await expect(cards).toHaveCount(8);
+    await expect(page.getByTestId('filter-results')).toHaveText('Showing 8 games');
+  });
 });
