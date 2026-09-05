@@ -32,6 +32,12 @@ const games = await getAllGames(getDatabase());
 </Layout>
 ```
 
+### Component API Documentation
+
+- Define a `Props` interface in the frontmatter of every reusable component and document the interface with a concise TSDoc/JSDoc comment.
+- Document each prop's purpose, required/optional status, accepted values, and forwarded native attributes when those details are not obvious from the type.
+- Keep the `Props` documentation current whenever the component contract changes. Do not add comments that merely repeat the prop name or type.
+
 ## Layouts
 
 - Create reusable layout components in `src/layouts/`
@@ -113,6 +119,7 @@ There is no Svelte/React layer. When a page genuinely needs client behaviour, ad
 - Type component imports and helper return values
 - Run `npx astro sync` to (re)generate route/content types before linting or type-checking
 - `.astro` files are type-checked by `npm run typecheck:astro` (which runs `astro sync` then `astro check`), on the classic `typescript` package. The pure TypeScript in `db/`, `src/lib/`, and `src/types/` is type-checked separately by `npm run typecheck` (the native TS 7 compiler, `tsgo`), which does **not** process `.astro` files.
+- Use the project's TypeScript formatting conventions: single quotes, semicolons, two-space indentation, trailing commas in multiline structures, and `import type` for type-only imports.
 
 ## Best Practices
 
@@ -120,3 +127,4 @@ There is no Svelte/React layer. When a page genuinely needs client behaviour, ad
 - Minimize client-side JavaScript — the default is zero JS shipped
 - Import and use global CSS styles from layouts
 - Always include a `data-testid` on interactive elements (see `ui.instructions.md`)
+- In frontmatter and scripts, comment intent and non-obvious browser or build-time constraints rather than narrating routine statements.

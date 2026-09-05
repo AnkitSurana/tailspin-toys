@@ -39,5 +39,9 @@ export default [
     languageOptions: {
       parser: tseslint.parser,
     },
+    rules: {
+      // Public TypeScript APIs must expose a documented, stable type boundary.
+      "@typescript-eslint/explicit-module-boundary-types": "error",
+    },
   },
 ];
